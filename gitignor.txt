@@ -1,0 +1,2 @@
+Coursework/.vs/
+Coursework/debug/
