@@ -20,6 +20,7 @@
 // 	         Для обробки даних скористатися динамічним масивом покажчиків на структури 
 // 	         відповідного типу.
 
+#include <iomanip>
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -90,8 +91,8 @@ void FillAddress(Address*& data) {
 		cout << "Can't open file!" << endl;
 	}
 	else {
-		readFile.getline(temp, 255);
-		SIZE = atoi(temp);
+		readFile.getline(temp, 255);  // зчитуємо рядок в змінну temp типу char[] 
+		SIZE = atoi(temp); // atoi переводить з char* або char[] в int // переводим temp (char[]) в SIZE (int)  
 		data = new Address[SIZE];
 		for (int i = 0; i < SIZE; i++)
 		{
@@ -376,10 +377,16 @@ void AveragePrice(Address * data, int room) {
 	cout << " Average Price for " << room << " rooms flat is:   " << priceSum / roomCounter << endl;
 	cout << "----------------------------------------------------" << endl;
 }
-
+void TableReport(Address * address) {
+	cout << "City" << setw(20) << "District" << setw(25) << "Street" << setw(20) << "House number" << setw(20) << "Flat Number" << setw(20) << "Amount of rooms" << setw(10) << "Area" << setw(10) << "Floor" << setw(10) << "Price" << endl;
+	for (int i = 0; i < SIZE; i++)
+	{
+		cout << address[i].city << setw(20) << address[i].district << setw(25) << address[i].street << setw(20) << address[i].houseNumber << setw(20) << address[i].flatNumber << setw(20) << address[i].roomsAmount << setw(10) << address[i].area << setw(10) << address[i].floor << setw(10) << address[i].price << endl;
+	}
+}
 void Menu() {
 	enum Choice {
-		FillAndShow = 1, AddNewProperty = 2, DeleteProperty = 3, EditInformation = 4, SortDistrict = 5, SortSurname = 6, SortPrice = 7, SortArea = 8, SearchDistrict = 9, SeachRoomsAmount = 10, SearchFloor = 11, AveragePrices = 12, Exit = 0
+		FillAndShow = 1, AddNewProperty = 2, DeleteProperty = 3, EditInformation = 4, SortDistrict = 5, SortSurname = 6, SortPrice = 7, SortArea = 8, SearchDistrict = 9, SeachRoomsAmount = 10, SearchFloor = 11, AveragePrices = 12, TableInfo = 13, Exit = 0
 	};
 	Address* data;
 	string city;
@@ -406,7 +413,7 @@ void Menu() {
 	{
 		cout << " Press:\n 0 - to Exit!\n 1 - to watch what properties are available\n 2 - to Add New real estate property for sale\n 3 - To Delete real estate property from the list" << endl;
 		cout << " 4 - to Edit Information\n 5 - to Sort by district\n 6 - to Sort by Owner's Surname\n 7 - to Sort by Price\n 8 - to Sort by Area\n 9 - to Search by District\n 10 - to Search by Rooms amount" << endl;
-		cout << " 11 - to Search by floor\n 12 - to know the average price for X-rooms flat" << endl;
+		cout << " 11 - to Search by floor\n 12 - to know the average price for X-rooms flat\n 13 - to show all information in a table" << endl;
 		cin >> choice;
 		Address tempdata;
 		switch (choice) {
@@ -522,6 +529,9 @@ void Menu() {
 			cin >> room;
 			AveragePrice(data, room);
 			break;
+		case Choice::TableInfo:
+			TableReport(data);
+			break;
 		}
 		if (choice == Choice::Exit)
 		{
@@ -554,9 +564,9 @@ void Menu() {
 	}
 	delete[]data;
 }
+
 int main() {
 	Menu();
-
 	system("pause");
 	return 0;
 }
